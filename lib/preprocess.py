@@ -130,4 +130,4 @@ if __name__ == '__main__':
     data = prep.data    
 
     with open('../intermediate_data/prep_data_{}.pickle'.format(gran), mode='wb') as f:
-    pickle.dump(data, f)
+        pickle.dump(data, f)
