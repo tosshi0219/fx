@@ -9,11 +9,13 @@ def ichimoku(df):
     min26 = df.rolling(26).min()
     max52 = df.rolling(52).max()
     min52 = df.rolling(52).min()
-    chikoindex = [df.index[0] +  timedelta(days = a) for a in range(-26,0)]
+#     chikoindex = [df.index[0] +  timedelta(days = a) for a in range(-26,0)]
+    chikoindex = [df.index[0] +  timedelta(minutes = a) for a in range(-26 *15,0,15)]
     chikoadder = list(df.index[:-26])
     chikoindex.extend(chikoadder)
     senkoindex = list(df.index[26:])
-    senkoadder = [df.index[-1] +  timedelta(days = a) for a in range(1,27)]
+#     senkoadder = [df.index[-1] +  timedelta(days = a) for a in range(1,27)]
+    senkoadder = [df.index[-1] +  timedelta(days = a) for a in range(15,27*15,15)]
     senkoindex.extend(senkoadder)
 
     tenkan = (max9 + min9) / 2
