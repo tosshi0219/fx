@@ -4,6 +4,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pickle
 
+from sklearn.metrics import mean_squared_error
 import renom as rm
 from renom.optimizer import Adam, Adagrad
 from renom.cuda import set_cuda_active
@@ -14,7 +15,7 @@ import sys
 import os
 import talib
 sys.path.append('/Users/toshio/project/fx')
-from config import token, gran, look_back, pred_length
+from config import *
 from lib.preprocess import Preprocess
 
 import oandapy
@@ -34,6 +35,7 @@ class Inference:
         self.data = self.standardize()
         self.exp, self.target = self.create_dataset()
         self.pred = self.predict()
+        self.pred_side = self.predict_side()
         
     def load_scaler(self):
         with open('../model/std_scaler_{}.pickle'.format(gran), mode='rb') as f:
@@ -71,7 +73,17 @@ class Inference:
         self.sequential.truncate()
         prediction = y_pred * self.stds[9] + self.means[9]
         return prediction
-    
+
+    def predict_side(self):
+        if self.pred >= threshold:
+            side = 'buy'
+        elif self.pred <= -threshold:
+            side = 'sell'
+        elif -threshold < self.pred < threshold:
+            side = 'zero'
+        return side
+
 if __name__ == '__main__':
     inf = Inference()
     print(inf.pred)
+    print(inf.pred_side)
